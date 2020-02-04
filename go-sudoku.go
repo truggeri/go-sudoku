@@ -2,10 +2,15 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 )
+
+const lineWidth = 9
 
 func main() {
 	if err := run(); err != nil {
@@ -15,25 +20,58 @@ func main() {
 }
 
 func run() error {
-	file, err := parseInput()
+	nums, err := loadInput()
 	if err != nil {
 		return err
 	}
 
-	log.Println(file)
+	for _, v := range nums {
+		fmt.Println(v)
+	}
 	return nil
 }
 
-func parseInput() (string, error) {
+func loadInput() ([lineWidth][lineWidth]int, error) {
+	var nums [lineWidth][lineWidth]int
+
 	argsWithoutProg := os.Args[1:]
 	if len(argsWithoutProg) == 0 {
-		return "", errors.New("No input args provided")
+		return nums, errors.New("No input args provided")
 	}
 
-	file, err := ioutil.ReadFile(argsWithoutProg[0])
+	bytes, err := ioutil.ReadFile(argsWithoutProg[0])
 	if err != nil {
-		return "", err
+		return nums, err
 	}
 
-	return string(file), nil
+	lines := strings.Split(string(bytes), "\n")
+	for lineNum, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
+
+		row, err := splitLine(line)
+		if err != nil {
+			return nums, err
+		}
+		nums[lineNum] = row
+	}
+
+	return nums, nil
+}
+
+func splitLine(line string) ([lineWidth]int, error) {
+	var row [lineWidth]int
+	values := strings.Split(line, " ")
+
+	for i, v := range values {
+		n, err := strconv.Atoi(v)
+		if err != nil {
+			return row, err
+		}
+
+		row[i] = n
+	}
+
+	return row, nil
 }
