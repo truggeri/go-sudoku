@@ -1,12 +1,19 @@
 package main
 
 func solve(puz Puzzle) Puzzle {
-	updated := findAllPossibilites(puz)
+	var updatedFlag bool = true
+	var updated Puzzle = puz
 
-	for i := 0; i < lineWidth; i++ {
-		for j := 0; j < lineWidth; j++ {
-			if !(updated[i][j].solved()) && hasOnlyOne(updated[i][j].possibilities) {
-				updated[i][j].value = findOnlyValue(updated[i][j].possibilities)
+	for updatedFlag == true {
+		updated = findAllPossibilites(updated)
+		updatedFlag = false
+
+		for i := 0; i < lineWidth; i++ {
+			for j := 0; j < lineWidth; j++ {
+				if !(updated[i][j].solved()) && hasOnlyOne(updated[i][j].possibilities) {
+					updated[i][j].value = findOnlyValue(updated[i][j].possibilities)
+					updatedFlag = true
+				}
 			}
 		}
 	}
