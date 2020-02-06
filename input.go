@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func loadInput() ([lineWidth][lineWidth]int, error) {
-	var nums [lineWidth][lineWidth]int
+func loadInput() ([lineWidth][lineWidth]PuzzleSqure, error) {
+	var nums [lineWidth][lineWidth]PuzzleSqure
 
 	argsWithoutProg := os.Args[1:]
 	if len(argsWithoutProg) == 0 {
@@ -37,8 +37,8 @@ func loadInput() ([lineWidth][lineWidth]int, error) {
 	return nums, nil
 }
 
-func splitLine(line string) ([lineWidth]int, error) {
-	var row [lineWidth]int
+func splitLine(line string) ([lineWidth]PuzzleSqure, error) {
+	var row [lineWidth]PuzzleSqure
 	values := strings.Split(line, " ")
 
 	for i, v := range values {
@@ -47,7 +47,7 @@ func splitLine(line string) ([lineWidth]int, error) {
 			return row, err
 		}
 
-		row[i] = n
+		row[i] = PuzzleSqure(n)
 	}
 
 	return row, nil

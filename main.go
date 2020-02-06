@@ -8,6 +8,8 @@ import (
 
 const lineWidth = 9
 
+type PuzzleSqure int
+
 func main() {
 	if err := run(); err != nil {
 		log.Println("error :", err)
