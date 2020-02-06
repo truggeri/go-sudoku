@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func loadInput() ([lineWidth][lineWidth]PuzzleSqure, error) {
-	var nums [lineWidth][lineWidth]PuzzleSqure
+func loadInput() (Puzzle, error) {
+	var nums Puzzle
 
 	argsWithoutProg := os.Args[1:]
 	if len(argsWithoutProg) == 0 {
@@ -47,7 +47,7 @@ func splitLine(line string) ([lineWidth]PuzzleSqure, error) {
 			return row, err
 		}
 
-		row[i] = PuzzleSqure(n)
+		row[i] = createPuzzleSquare(n)
 	}
 
 	return row, nil

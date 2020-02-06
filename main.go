@@ -1,14 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
-
-const lineWidth = 9
-
-type PuzzleSqure int
 
 func main() {
 	if err := run(); err != nil {
@@ -18,13 +13,14 @@ func main() {
 }
 
 func run() error {
-	nums, err := loadInput()
+	puz, err := loadInput()
 	if err != nil {
 		return err
 	}
 
-	for _, v := range nums {
-		fmt.Println(v)
-	}
+	printPuzzle(puz)
+	result := solve(puz)
+	printPuzzle(result)
+
 	return nil
 }
