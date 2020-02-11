@@ -5,20 +5,26 @@ func solve(puz Puzzle) Puzzle {
 	var updated Puzzle = puz
 
 	for updatedFlag == true {
-		updated = findAllPossibilites(updated)
-		updatedFlag = false
+		updatedFlag, updated = solveUniques(updated)
+	}
 
-		for i := 0; i < lineWidth; i++ {
-			for j := 0; j < lineWidth; j++ {
-				if !(updated[i][j].solved()) && hasOnlyOne(updated[i][j].possibilities) {
-					updated[i][j].value = findOnlyValue(updated[i][j].possibilities)
-					updatedFlag = true
-				}
+	return updated
+}
+
+func solveUniques(puzzle Puzzle) (bool, Puzzle) {
+	puzzle = findAllPossibilites(puzzle)
+	updatedFlag := false
+
+	for i := 0; i < lineWidth; i++ {
+		for j := 0; j < lineWidth; j++ {
+			if !(puzzle[i][j].solved()) && hasOnlyOne(puzzle[i][j].possibilities) {
+				puzzle[i][j].value = findOnlyValue(puzzle[i][j].possibilities)
+				updatedFlag = true
 			}
 		}
 	}
 
-	return updated
+	return updatedFlag, puzzle
 }
 
 func findAllPossibilites(puz Puzzle) Puzzle {
