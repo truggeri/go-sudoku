@@ -1,30 +1,57 @@
 package main
 
+import (
+	"errors"
+	"fmt"
+)
+
 func solve(puz Puzzle) Puzzle {
 	var updatedFlag bool = true
-	var updated Puzzle = puz
+	// var err error
 
 	for updatedFlag == true {
-		updatedFlag, updated = solveUniques(updated)
+		puz2, err := solveUniques(puz)
+
+		if puz2 != puz {
+			fmt.Println("Puzzle has been updated")
+		} else {
+			fmt.Println("Puzzle has NOT been updated")
+		}
+
+		puz = puz2
+
+		if err == nil {
+			continue
+		}
+
+		//...
+
+		if err != nil {
+			break
+		}
 	}
 
-	return updated
+	return puz
 }
 
-func solveUniques(puzzle Puzzle) (bool, Puzzle) {
-	puzzle = findAllPossibilites(puzzle)
+func solveUniques(puz Puzzle) (Puzzle, error) {
+	puz = findAllPossibilites(puz)
 	updatedFlag := false
 
 	for i := 0; i < lineWidth; i++ {
 		for j := 0; j < lineWidth; j++ {
-			if !(puzzle[i][j].solved()) && hasOnlyOne(puzzle[i][j].possibilities) {
-				puzzle[i][j].value = findOnlyValue(puzzle[i][j].possibilities)
+			if !(puz[i][j].solved()) && hasOnlyOne(puz[i][j].possibilities) {
+				puz[i][j].value = findOnlyValue(puz[i][j].possibilities)
 				updatedFlag = true
 			}
 		}
 	}
 
-	return updatedFlag, puzzle
+	if !updatedFlag {
+		return puz, errors.New("No elements solved")
+	}
+
+	return puz, nil
 }
 
 func findAllPossibilites(puz Puzzle) Puzzle {
