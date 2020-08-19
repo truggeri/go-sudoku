@@ -37,8 +37,8 @@ func loadInput() (Puzzle, error) {
 	return nums, nil
 }
 
-func splitLine(line string) ([lineWidth]PuzzleSqure, error) {
-	var row [lineWidth]PuzzleSqure
+func splitLine(line string) ([lineWidth]PuzzleSquare, error) {
+	var row [lineWidth]PuzzleSquare
 	values := strings.Split(line, " ")
 
 	for i, v := range values {

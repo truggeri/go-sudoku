@@ -1,12 +1,13 @@
 package main
 
-type PuzzleSqure struct {
+//PuzzleSquare comment for docs
+type PuzzleSquare struct {
 	value         int
 	possibilities [lineWidth]bool
 }
 
-func createPuzzleSquare(v int) PuzzleSqure {
-	var sqr PuzzleSqure
+func createPuzzleSquare(v int) PuzzleSquare {
+	var sqr PuzzleSquare
 	if v > 0 {
 		sqr.value = v
 	} else {
@@ -15,7 +16,7 @@ func createPuzzleSquare(v int) PuzzleSqure {
 	return sqr
 }
 
-func (sqr PuzzleSqure) solved() bool {
+func (sqr PuzzleSquare) solved() bool {
 	if sqr.value > 0 {
 		return true
 	}

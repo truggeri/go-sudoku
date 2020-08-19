@@ -66,7 +66,7 @@ func findAllPossibilites(puz Puzzle) Puzzle {
 }
 
 func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
-	var row [lineWidth]PuzzleSqure
+	var row [lineWidth]PuzzleSquare
 	for i := 0; i < lineWidth; i++ {
 		row[i] = puz[i][y]
 	}
@@ -75,7 +75,7 @@ func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
 
 	xOffset := x / cubeWidth
 	yOffset := y / cubeWidth
-	var cube [cubeWidth][cubeWidth]PuzzleSqure
+	var cube [cubeWidth][cubeWidth]PuzzleSquare
 	for i, v := range cube {
 		for j := range v {
 			cube[i][j] = puz[i+(xOffset*cubeWidth)][j+(yOffset*cubeWidth)]
@@ -86,7 +86,7 @@ func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
 	return mergePoss(rowPoss, colPoss, cubePoss)
 }
 
-func findElementPossbilities(elements [lineWidth]PuzzleSqure, x int) [lineWidth]bool {
+func findElementPossbilities(elements [lineWidth]PuzzleSquare, x int) [lineWidth]bool {
 	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
 
 	for i := range elements {
@@ -102,7 +102,7 @@ func findElementPossbilities(elements [lineWidth]PuzzleSqure, x int) [lineWidth]
 	return poss
 }
 
-func findSqrPossbilities(cube [cubeWidth][cubeWidth]PuzzleSqure, x, y int) [lineWidth]bool {
+func findSqrPossbilities(cube [cubeWidth][cubeWidth]PuzzleSquare, x, y int) [lineWidth]bool {
 	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
 
 	for i, v := range cube {

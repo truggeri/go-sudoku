@@ -5,7 +5,7 @@ import "fmt"
 const lineWidth = 9
 const cubeWidth = lineWidth / 3
 
-type Puzzle [lineWidth][lineWidth]PuzzleSqure
+type Puzzle [lineWidth][lineWidth]PuzzleSquare
 
 func (result Puzzle) print() {
 	for _, r := range result {
