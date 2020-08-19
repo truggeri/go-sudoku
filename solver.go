@@ -70,9 +70,8 @@ func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
 	for i := 0; i < lineWidth; i++ {
 		row[i] = puz[i][y]
 	}
-	rowPoss := findRowPossbilities(row, x)
-
-	colPoss := findColPossbilities(puz[x], y)
+	rowPoss := findElementPossbilities(row, x)
+	colPoss := findElementPossbilities(puz[x], y)
 
 	xOffset := x / cubeWidth
 	yOffset := y / cubeWidth
@@ -87,32 +86,16 @@ func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
 	return mergePoss(rowPoss, colPoss, cubePoss)
 }
 
-func findRowPossbilities(row [lineWidth]PuzzleSqure, x int) [lineWidth]bool {
+func findElementPossbilities(elements [lineWidth]PuzzleSqure, x int) [lineWidth]bool {
 	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
 
-	for i := range row {
+	for i := range elements {
 		if i == x {
 			continue
 		}
 
-		if row[i].solved() {
-			poss[row[i].value-1] = false
-		}
-	}
-
-	return poss
-}
-
-func findColPossbilities(col [lineWidth]PuzzleSqure, y int) [lineWidth]bool {
-	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
-
-	for i := range col {
-		if i == y {
-			continue
-		}
-
-		if col[i].solved() {
-			poss[col[i].value-1] = false
+		if elements[i].solved() {
+			poss[elements[i].value-1] = false
 		}
 	}
 
@@ -138,12 +121,10 @@ func findSqrPossbilities(cube [cubeWidth][cubeWidth]PuzzleSqure, x, y int) [line
 }
 
 func mergePoss(row, col, cube [lineWidth]bool) [lineWidth]bool {
-	poss := [lineWidth]bool{false, false, false, false, false, false, false, false, false}
+	var poss [lineWidth]bool
 
-	for i := 0; i < lineWidth; i++ {
-		if row[i] == true && col[i] == true && cube[i] == true {
-			poss[i] = true
-		}
+	for i := range poss {
+		poss[i] = row[i] && col[i] && cube[i]
 	}
 	return poss
 }
