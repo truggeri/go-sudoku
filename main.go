@@ -18,9 +18,9 @@ func run() error {
 		return err
 	}
 
-	printPuzzle(puz)
+	puz.print()
 	result := solve(puz)
-	printPuzzle(result)
+	result.print()
 
 	return nil
 }
