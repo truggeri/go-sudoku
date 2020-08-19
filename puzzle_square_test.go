@@ -21,3 +21,32 @@ func TestSolved(t *testing.T) {
 		}
 	}
 }
+
+func TestCreatePuzzleSquare(t *testing.T) {
+	tables := []struct {
+		val       int
+		checkPoss bool
+	}{
+		{0, true},
+		{1, false},
+		{7, false},
+	}
+
+	for _, table := range tables {
+		result := createPuzzleSquare(table.val)
+		if result.value != table.val {
+			t.Errorf("PuzzleSquare value not expected, got: %d, want: %d.", result.value, table.val)
+		}
+
+		if table.checkPoss {
+			possReduction := true
+			for _, p := range result.possibilities {
+				possReduction = possReduction && p
+			}
+
+			if possReduction != true {
+				t.Errorf("PuzzleSquare possibilites not all true, value: %d", table.val)
+			}
+		}
+	}
+}
