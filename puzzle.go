@@ -1,22 +1,30 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 const lineWidth = 9
 const cubeWidth = lineWidth / 3
 
+// Puzzle Representation of a Sudoku puzzle
 type Puzzle [lineWidth][lineWidth]PuzzleSquare
 
-func (result Puzzle) print() {
-	for _, r := range result {
+func (p Puzzle) String() string {
+	var output []string
+
+	for _, r := range p {
+		var line []string
 		for _, v := range r {
 			if v.solved() {
-				fmt.Printf(" %v", v.value)
+				line = append(line, fmt.Sprintf("%v", v.value))
 			} else {
-				fmt.Print(" -")
+				line = append(line, "-")
 			}
 		}
-		fmt.Println("")
+		output = append(output, strings.Join(line[:], " "))
 	}
-	fmt.Println("-----")
+
+	return strings.Join(output[:], "\n")
 }

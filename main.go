@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
@@ -18,9 +19,9 @@ func run() error {
 		return err
 	}
 
-	puz.print()
+	fmt.Println(puz)
 	result := solve(puz)
-	result.print()
+	fmt.Println(result)
 
 	return nil
 }
