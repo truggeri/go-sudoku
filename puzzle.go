@@ -11,6 +11,17 @@ const cubeWidth = lineWidth / 3
 // Puzzle Representation of a Sudoku puzzle
 type Puzzle [lineWidth][lineWidth]PuzzleSquare
 
+func (p Puzzle) getCube(x, y int) [lineWidth]PuzzleSquare {
+	xOffset := x / cubeWidth
+	yOffset := y / cubeWidth
+
+	var result [lineWidth]PuzzleSquare
+	copy(result[0:3], p[(xOffset * cubeWidth)][(yOffset*cubeWidth):3])
+	copy(result[3:6], p[1+(xOffset*cubeWidth)][(yOffset*cubeWidth):3])
+	copy(result[6:9], p[2+(xOffset*cubeWidth)][(yOffset*cubeWidth):3])
+	return result
+}
+
 func (p Puzzle) String() string {
 	var output []string
 

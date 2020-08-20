@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func CreateTestPuzzle() Puzzle {
 	var puzzle Puzzle
@@ -22,6 +24,18 @@ func CreateTestPuzzle() Puzzle {
 	}
 
 	return puzzle
+}
+
+func TestGetCube(t *testing.T) {
+	puzzle := CreateTestPuzzle()
+	result := puzzle.getCube(1, 1)
+	expected := [lineWidth]int{0, 3, 8, 0, 1, 0, 5, 0, 7}
+
+	for i, v := range expected {
+		if result[i].value != v {
+			t.Errorf("GetCube value error at index: %d, expected: %d, got: %d", i, v, result[i].value)
+		}
+	}
 }
 
 func TestPrint(t *testing.T) {
