@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 )
 
 func solve(puz Puzzle) Puzzle {
@@ -11,13 +10,6 @@ func solve(puz Puzzle) Puzzle {
 
 	for updatedFlag == true {
 		puz2, err := solveUniques(puz)
-
-		if puz2 != puz {
-			fmt.Println("Puzzle has been updated")
-		} else {
-			fmt.Println("Puzzle has NOT been updated")
-		}
-
 		puz = puz2
 
 		if err == nil {
@@ -72,16 +64,7 @@ func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
 	}
 	rowPoss := findElementPossbilities(row, x)
 	colPoss := findElementPossbilities(puz[x], y)
-
-	xOffset := x / cubeWidth
-	yOffset := y / cubeWidth
-	var cube [cubeWidth][cubeWidth]PuzzleSquare
-	for i, v := range cube {
-		for j := range v {
-			cube[i][j] = puz[i+(xOffset*cubeWidth)][j+(yOffset*cubeWidth)]
-		}
-	}
-	cubePoss := findSqrPossbilities(cube, x%cubeWidth, y%cubeWidth)
+	cubePoss := findElementPossbilities(puz.getCube(x, y), puz.getCubeIndex(x, y))
 
 	return mergePoss(rowPoss, colPoss, cubePoss)
 }
@@ -96,24 +79,6 @@ func findElementPossbilities(elements [lineWidth]PuzzleSquare, x int) [lineWidth
 
 		if elements[i].solved() {
 			poss[elements[i].value-1] = false
-		}
-	}
-
-	return poss
-}
-
-func findSqrPossbilities(cube [cubeWidth][cubeWidth]PuzzleSquare, x, y int) [lineWidth]bool {
-	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
-
-	for i, v := range cube {
-		for j := range v {
-			if i == x && j == y {
-				continue
-			}
-
-			if cube[i][j].solved() {
-				poss[cube[i][j].value-1] = false
-			}
 		}
 	}
 

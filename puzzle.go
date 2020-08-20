@@ -16,10 +16,16 @@ func (p Puzzle) getCube(x, y int) [lineWidth]PuzzleSquare {
 	yOffset := y / cubeWidth
 
 	var result [lineWidth]PuzzleSquare
-	copy(result[0:3], p[(xOffset * cubeWidth)][(yOffset*cubeWidth):3])
-	copy(result[3:6], p[1+(xOffset*cubeWidth)][(yOffset*cubeWidth):3])
-	copy(result[6:9], p[2+(xOffset*cubeWidth)][(yOffset*cubeWidth):3])
+	xIndex := xOffset * cubeWidth
+	yIndex := yOffset * cubeWidth
+	copy(result[0:3], p[xIndex][yIndex:yIndex+3])
+	copy(result[3:6], p[1+xIndex][yIndex:yIndex+3])
+	copy(result[6:9], p[2+xIndex][yIndex:yIndex+3])
 	return result
+}
+
+func (p Puzzle) getCubeIndex(x, y int) int {
+	return (x%cubeWidth)*cubeWidth + (y % cubeWidth)
 }
 
 func (p Puzzle) String() string {

@@ -38,6 +38,31 @@ func TestGetCube(t *testing.T) {
 	}
 }
 
+func TestGetCubeIndex(t *testing.T) {
+	puzzle := CreateTestPuzzle()
+	tables := []struct {
+		x     int
+		y     int
+		index int
+	}{
+		{0, 0, 0},
+		{0, 3, 0},
+		{0, 4, 1},
+		{0, 5, 2},
+		{3, 6, 0},
+		{4, 7, 4},
+		{5, 8, 8},
+		{0, 8, 2},
+	}
+
+	for _, v := range tables {
+		result := puzzle.getCubeIndex(v.x, v.y)
+		if result != v.index {
+			t.Errorf("getCubeIndex error for (%d, %d), expected: %d, got: %d", v.x, v.y, v.index, result)
+		}
+	}
+}
+
 func TestPrint(t *testing.T) {
 	puzzle := CreateTestPuzzle()
 
