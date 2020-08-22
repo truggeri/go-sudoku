@@ -11,6 +11,15 @@ const cubeWidth = lineWidth / 3
 // Puzzle Representation of a Sudoku puzzle
 type Puzzle [lineWidth][lineWidth]PuzzleSquare
 
+// GetRow returns a given row
+func (p Puzzle) GetRow(i int) [lineWidth]PuzzleSquare {
+	var row PuzzleSet
+	for x := 0; x < lineWidth; x++ {
+		row[x] = p[x][i]
+	}
+	return row
+}
+
 // GetCube returns squares that form a cube around given point
 func (p Puzzle) GetCube(x, y int) [lineWidth]PuzzleSquare {
 	xOffset := x / cubeWidth

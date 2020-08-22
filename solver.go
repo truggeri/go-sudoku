@@ -36,18 +36,14 @@ func solve(puz Puzzle) Puzzle {
 }
 
 func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
-	var row [lineWidth]PuzzleSquare
-	for i := 0; i < lineWidth; i++ {
-		row[i] = puz[i][y]
-	}
-	rowPoss := findElementPossbilities(row, x)
+	rowPoss := findElementPossbilities(puz.GetRow(y), x)
 	colPoss := findElementPossbilities(puz[x], y)
 	cubePoss := findElementPossbilities(puz.GetCube(x, y), puz.getCubeIndex(x, y))
 
 	return mergePoss(rowPoss, colPoss, cubePoss)
 }
 
-func findElementPossbilities(elements [lineWidth]PuzzleSquare, x int) [lineWidth]bool {
+func findElementPossbilities(elements PuzzleSet, x int) [lineWidth]bool {
 	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
 
 	for i := range elements {
