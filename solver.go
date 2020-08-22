@@ -5,48 +5,37 @@ import (
 )
 
 func solve(puz Puzzle) Puzzle {
-	var updatedFlag bool = true
-	// var err error
+	for true {
+		var err error
 
-	for updatedFlag == true {
-		puz2, err := solveUniques(puz)
-		puz = puz2
-
+		puz = findPuzzlePossibilites(puz)
+		puz, err = solveUniques(puz)
 		if err == nil {
 			continue
 		}
 
-		//...
-
-		if err != nil {
-			break
+		puz, err = solveRows(puz)
+		if err == nil {
+			continue
 		}
+
+		puz, err = solveColumns(puz)
+		if err == nil {
+			continue
+		}
+
+		puz, err = solveCubes(puz)
+		if err == nil {
+			continue
+		}
+
+		break
 	}
 
 	return puz
 }
 
-func solveUniques(puz Puzzle) (Puzzle, error) {
-	puz = findAllPossibilites(puz)
-	updatedFlag := false
-
-	for i := 0; i < lineWidth; i++ {
-		for j := 0; j < lineWidth; j++ {
-			if !(puz[i][j].solved()) && hasOnlyOne(puz[i][j].possibilities) {
-				puz[i][j].value = findOnlyValue(puz[i][j].possibilities)
-				updatedFlag = true
-			}
-		}
-	}
-
-	if !updatedFlag {
-		return puz, errors.New("No elements solved")
-	}
-
-	return puz, nil
-}
-
-func findAllPossibilites(puz Puzzle) Puzzle {
+func findPuzzlePossibilites(puz Puzzle) Puzzle {
 	for i := 0; i < lineWidth; i++ {
 		for j := 0; j < lineWidth; j++ {
 			if !puz[i][j].solved() {
@@ -94,6 +83,25 @@ func mergePoss(row, col, cube [lineWidth]bool) [lineWidth]bool {
 	return poss
 }
 
+func solveUniques(puz Puzzle) (Puzzle, error) {
+	updatedFlag := false
+
+	for i := 0; i < lineWidth; i++ {
+		for j := 0; j < lineWidth; j++ {
+			if !(puz[i][j].solved()) && hasOnlyOne(puz[i][j].possibilities) {
+				puz[i][j].value = findOnlyValue(puz[i][j].possibilities)
+				updatedFlag = true
+			}
+		}
+	}
+
+	if !updatedFlag {
+		return puz, errors.New("No elements solved")
+	}
+
+	return puz, nil
+}
+
 func hasOnlyOne(poss [lineWidth]bool) bool {
 	counter := 0
 	for _, v := range poss {
@@ -115,4 +123,16 @@ func findOnlyValue(poss [lineWidth]bool) int {
 		}
 	}
 	return 0
+}
+
+func solveRows(puz Puzzle) (Puzzle, error) {
+	return puz, errors.New("No elements solved")
+}
+
+func solveColumns(puz Puzzle) (Puzzle, error) {
+	return puz, errors.New("No elements solved")
+}
+
+func solveCubes(puz Puzzle) (Puzzle, error) {
+	return puz, errors.New("No elements solved")
 }
