@@ -8,7 +8,7 @@ func solve(puz Puzzle) Puzzle {
 	for true {
 		var err error
 
-		puz = findPuzzlePossibilites(puz)
+		puz = puz.UpdatePossibilites()
 		puz, err = solveUniques(puz)
 		if err == nil {
 			continue
@@ -35,17 +35,6 @@ func solve(puz Puzzle) Puzzle {
 	return puz
 }
 
-func findPuzzlePossibilites(puz Puzzle) Puzzle {
-	for i := 0; i < lineWidth; i++ {
-		for j := 0; j < lineWidth; j++ {
-			if !puz[i][j].solved() {
-				puz[i][j].possibilities = findPossibilities(puz, i, j)
-			}
-		}
-	}
-	return puz
-}
-
 func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
 	var row [lineWidth]PuzzleSquare
 	for i := 0; i < lineWidth; i++ {
@@ -53,7 +42,7 @@ func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
 	}
 	rowPoss := findElementPossbilities(row, x)
 	colPoss := findElementPossbilities(puz[x], y)
-	cubePoss := findElementPossbilities(puz.getCube(x, y), puz.getCubeIndex(x, y))
+	cubePoss := findElementPossbilities(puz.GetCube(x, y), puz.getCubeIndex(x, y))
 
 	return mergePoss(rowPoss, colPoss, cubePoss)
 }

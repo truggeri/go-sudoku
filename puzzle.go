@@ -11,7 +11,8 @@ const cubeWidth = lineWidth / 3
 // Puzzle Representation of a Sudoku puzzle
 type Puzzle [lineWidth][lineWidth]PuzzleSquare
 
-func (p Puzzle) getCube(x, y int) [lineWidth]PuzzleSquare {
+// GetCube returns squares that form a cube around given point
+func (p Puzzle) GetCube(x, y int) [lineWidth]PuzzleSquare {
 	xOffset := x / cubeWidth
 	yOffset := y / cubeWidth
 
@@ -26,6 +27,18 @@ func (p Puzzle) getCube(x, y int) [lineWidth]PuzzleSquare {
 
 func (p Puzzle) getCubeIndex(x, y int) int {
 	return (x%cubeWidth)*cubeWidth + (y % cubeWidth)
+}
+
+// UpdatePossibilites Updates internal possibilities
+func (p Puzzle) UpdatePossibilites() Puzzle {
+	for i := 0; i < lineWidth; i++ {
+		for j := 0; j < lineWidth; j++ {
+			if !p[i][j].solved() {
+				p[i][j].possibilities = findPossibilities(p, i, j)
+			}
+		}
+	}
+	return p
 }
 
 func (p Puzzle) String() string {

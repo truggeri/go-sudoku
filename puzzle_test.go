@@ -28,7 +28,7 @@ func CreateTestPuzzle() Puzzle {
 
 func TestGetCube(t *testing.T) {
 	puzzle := CreateTestPuzzle()
-	result := puzzle.getCube(1, 1)
+	result := puzzle.GetCube(1, 1)
 	expected := [lineWidth]int{0, 3, 8, 0, 1, 0, 5, 0, 7}
 
 	for i, v := range expected {
