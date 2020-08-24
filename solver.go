@@ -4,7 +4,8 @@ import (
 	"errors"
 )
 
-func solve(puz Puzzle) Puzzle {
+// Solve Solves a given puzzle
+func Solve(puz Puzzle) Puzzle {
 	for true {
 		var err error
 

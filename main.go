@@ -20,7 +20,7 @@ func run() error {
 	}
 
 	fmt.Println(puz)
-	result := solve(puz)
+	result := Solve(puz)
 	fmt.Println("-----------------")
 	fmt.Println(result)
 

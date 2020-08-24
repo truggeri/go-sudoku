@@ -4,7 +4,7 @@ import "testing"
 
 func TestSolver(t *testing.T) {
 	puzzle := CreateTestPuzzle()
-	result := solve(puzzle)
+	result := Solve(puzzle)
 	expectedString := `6 3 8 2 9 1 7 4 5
 4 1 9 6 7 5 2 8 3
 5 2 7 3 8 4 9 6 1
