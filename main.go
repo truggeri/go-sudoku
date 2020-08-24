@@ -21,6 +21,7 @@ func run() error {
 
 	fmt.Println(puz)
 	result := solve(puz)
+	fmt.Println("-----------------")
 	fmt.Println(result)
 
 	return nil
