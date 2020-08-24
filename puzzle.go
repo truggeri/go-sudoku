@@ -12,20 +12,25 @@ const cubeWidth = lineWidth / 3
 type Puzzle [lineWidth][lineWidth]PuzzleSquare
 
 // GetRow returns a given row
-func (p Puzzle) GetRow(i int) [lineWidth]PuzzleSquare {
-	var row PuzzleSet
+func (p Puzzle) GetRow(i int) PuzzleSet {
+	return p[i]
+}
+
+// GetColumn returns a column by given index
+func (p Puzzle) GetColumn(i int) PuzzleSet {
+	var column PuzzleSet
 	for x := 0; x < lineWidth; x++ {
-		row[x] = p[x][i]
+		column[x] = p[x][i]
 	}
-	return row
+	return column
 }
 
 // GetCube returns squares that form a cube around given point
-func (p Puzzle) GetCube(x, y int) [lineWidth]PuzzleSquare {
+func (p Puzzle) GetCube(x, y int) PuzzleSet {
 	xOffset := x / cubeWidth
 	yOffset := y / cubeWidth
 
-	var result [lineWidth]PuzzleSquare
+	var result PuzzleSet
 	xIndex := xOffset * cubeWidth
 	yIndex := yOffset * cubeWidth
 	copy(result[0:3], p[xIndex][yIndex:yIndex+3])
@@ -48,6 +53,39 @@ func (p Puzzle) UpdatePossibilites() Puzzle {
 		}
 	}
 	return p
+}
+
+func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
+	rowPoss := findElementPossbilities(puz.GetRow(x), x)
+	colPoss := findElementPossbilities(puz.GetColumn(y), y)
+	cubePoss := findElementPossbilities(puz.GetCube(x, y), puz.getCubeIndex(x, y))
+
+	return mergePoss(rowPoss, colPoss, cubePoss)
+}
+
+func findElementPossbilities(elements PuzzleSet, exclude int) [lineWidth]bool {
+	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
+
+	for i := range elements {
+		if i == exclude {
+			continue
+		}
+
+		if elements[i].solved() {
+			poss[elements[i].value-1] = false
+		}
+	}
+
+	return poss
+}
+
+func mergePoss(row, col, cube [lineWidth]bool) [lineWidth]bool {
+	var poss [lineWidth]bool
+
+	for i := range poss {
+		poss[i] = row[i] && col[i] && cube[i]
+	}
+	return poss
 }
 
 func (p Puzzle) String() string {

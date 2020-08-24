@@ -35,46 +35,17 @@ func solve(puz Puzzle) Puzzle {
 	return puz
 }
 
-func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
-	rowPoss := findElementPossbilities(puz.GetRow(y), x)
-	colPoss := findElementPossbilities(puz[x], y)
-	cubePoss := findElementPossbilities(puz.GetCube(x, y), puz.getCubeIndex(x, y))
-
-	return mergePoss(rowPoss, colPoss, cubePoss)
-}
-
-func findElementPossbilities(elements PuzzleSet, x int) [lineWidth]bool {
-	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
-
-	for i := range elements {
-		if i == x {
-			continue
-		}
-
-		if elements[i].solved() {
-			poss[elements[i].value-1] = false
-		}
-	}
-
-	return poss
-}
-
-func mergePoss(row, col, cube [lineWidth]bool) [lineWidth]bool {
-	var poss [lineWidth]bool
-
-	for i := range poss {
-		poss[i] = row[i] && col[i] && cube[i]
-	}
-	return poss
-}
-
 func solveUniques(puz Puzzle) (Puzzle, error) {
 	updatedFlag := false
 
-	for i := 0; i < lineWidth; i++ {
-		for j := 0; j < lineWidth; j++ {
-			if !(puz[i][j].solved()) && hasOnlyOne(puz[i][j].possibilities) {
-				puz[i][j].value = findOnlyValue(puz[i][j].possibilities)
+	for x := 0; x < lineWidth; x++ {
+		for y := 0; y < lineWidth; y++ {
+			if puz[x][y].solved() {
+				continue
+			}
+
+			if hasOnlyOne(puz[x][y].possibilities) {
+				puz[x][y].value = findOnlyValue(puz[x][y].possibilities)
 				updatedFlag = true
 			}
 		}
@@ -90,7 +61,7 @@ func solveUniques(puz Puzzle) (Puzzle, error) {
 func hasOnlyOne(poss [lineWidth]bool) bool {
 	counter := 0
 	for _, v := range poss {
-		if v == true {
+		if v {
 			counter++
 		}
 
@@ -103,7 +74,7 @@ func hasOnlyOne(poss [lineWidth]bool) bool {
 
 func findOnlyValue(poss [lineWidth]bool) int {
 	for i, v := range poss {
-		if v == true {
+		if v {
 			return i + 1
 		}
 	}
@@ -111,11 +82,60 @@ func findOnlyValue(poss [lineWidth]bool) int {
 }
 
 func solveRows(puz Puzzle) (Puzzle, error) {
-	return puz, errors.New("No elements solved")
+	updatedFlag := false
+	var result PuzzleSet
+
+	for x := 0; x < lineWidth; x++ {
+		for y := 0; y < lineWidth; y++ {
+			if puz[x][y].solved() {
+				continue
+			}
+
+			updatedFlag, result = solveSet(puz.GetRow(x), y)
+			if updatedFlag {
+				puz[x][y] = result[y]
+				return puz, nil
+			}
+		}
+	}
+	return puz, errors.New("No elements solved by row")
+}
+
+func solveSet(set PuzzleSet, i int) (bool, PuzzleSet) {
+	if set[i].solved() {
+		return false, set
+	}
+
+	updatedFlag := false
+	setOptions := set.Possibilities(i)
+	for j, possInSet := range setOptions {
+		if set[i].possibilities[j] && !possInSet {
+			updatedFlag = true
+			set[i].value = j + 1
+		}
+	}
+
+	return updatedFlag, set
 }
 
 func solveColumns(puz Puzzle) (Puzzle, error) {
-	return puz, errors.New("No elements solved")
+	updatedFlag := false
+	var result PuzzleSet
+
+	for x := 0; x < lineWidth; x++ {
+		for y := 0; y < lineWidth; y++ {
+			if puz[x][y].solved() {
+				continue
+			}
+
+			updatedFlag, result = solveSet(puz.GetColumn(y), x)
+			if updatedFlag {
+				puz[x][y] = result[x]
+				return puz, nil
+			}
+		}
+	}
+	return puz, errors.New("No elements solved by column")
 }
 
 func solveCubes(puz Puzzle) (Puzzle, error) {
