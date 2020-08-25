@@ -1,6 +1,6 @@
 package main
 
-//PuzzleSquare comment for docs
+//PuzzleSquare Representation of a single square in the puzzle
 type PuzzleSquare struct {
 	value         int
 	possibilities [lineWidth]bool
@@ -17,8 +17,5 @@ func createPuzzleSquare(v int) PuzzleSquare {
 }
 
 func (sqr PuzzleSquare) solved() bool {
-	if sqr.value > 0 {
-		return true
-	}
-	return false
+	return sqr.value > 0
 }
