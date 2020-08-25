@@ -84,7 +84,7 @@ func findOnlyValue(poss [lineWidth]bool) int {
 
 func solveRows(puz Puzzle) (Puzzle, error) {
 	updatedFlag := false
-	var result PuzzleSet
+	var result PuzzleSquare
 
 	for x := 0; x < lineWidth; x++ {
 		for y := 0; y < lineWidth; y++ {
@@ -94,7 +94,7 @@ func solveRows(puz Puzzle) (Puzzle, error) {
 
 			updatedFlag, result = solveSet(puz.GetRow(x), y)
 			if updatedFlag {
-				puz[x][y] = result[y]
+				puz[x][y] = result
 				return puz, nil
 			}
 		}
@@ -102,26 +102,25 @@ func solveRows(puz Puzzle) (Puzzle, error) {
 	return puz, errors.New("No elements solved by row")
 }
 
-func solveSet(set PuzzleSet, i int) (bool, PuzzleSet) {
+func solveSet(set PuzzleSet, i int) (bool, PuzzleSquare) {
 	if set[i].solved() {
-		return false, set
+		return false, set[i]
 	}
 
-	updatedFlag := false
 	setOptions := set.Possibilities(i)
 	for j, possInSet := range setOptions {
 		if set[i].possibilities[j] && !possInSet {
-			updatedFlag = true
 			set[i].value = j + 1
+			return true, set[i]
 		}
 	}
 
-	return updatedFlag, set
+	return false, set[i]
 }
 
 func solveColumns(puz Puzzle) (Puzzle, error) {
 	updatedFlag := false
-	var result PuzzleSet
+	var result PuzzleSquare
 
 	for x := 0; x < lineWidth; x++ {
 		for y := 0; y < lineWidth; y++ {
@@ -131,7 +130,7 @@ func solveColumns(puz Puzzle) (Puzzle, error) {
 
 			updatedFlag, result = solveSet(puz.GetColumn(y), x)
 			if updatedFlag {
-				puz[x][y] = result[x]
+				puz[x][y] = result
 				return puz, nil
 			}
 		}
@@ -141,7 +140,7 @@ func solveColumns(puz Puzzle) (Puzzle, error) {
 
 func solveCubes(puz Puzzle) (Puzzle, error) {
 	updatedFlag := false
-	var result PuzzleSet
+	var result PuzzleSquare
 
 	for x := 0; x < lineWidth; x++ {
 		for y := 0; y < lineWidth; y++ {
@@ -149,10 +148,9 @@ func solveCubes(puz Puzzle) (Puzzle, error) {
 				continue
 			}
 
-			indexInCube := puz.getCubeIndex(x, y)
-			updatedFlag, result = solveSet(puz.GetCube(x, y), indexInCube)
+			updatedFlag, result = solveSet(puz.GetCube(x, y), puz.getCubeIndex(x, y))
 			if updatedFlag {
-				puz[x][y] = result[indexInCube]
+				puz[x][y] = result
 				return puz, nil
 			}
 		}
