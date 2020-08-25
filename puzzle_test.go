@@ -26,6 +26,30 @@ func CreateTestPuzzle() Puzzle {
 	return puzzle
 }
 
+func TestGetRow(t *testing.T) {
+	puzzle := CreateTestPuzzle()
+	row := puzzle.GetRow(0)
+	expected := [lineWidth]int{0, 3, 8, 2, 0, 0, 0, 4, 5}
+
+	for i := 0; i < lineWidth; i++ {
+		if row[i].value != expected[i] {
+			t.Errorf("GetRow value error at index: %d, expected: %d, got: %d", i, expected[i], row[i].value)
+		}
+	}
+}
+
+func TestGetColumn(t *testing.T) {
+	puzzle := CreateTestPuzzle()
+	column := puzzle.GetColumn(3)
+	expected := [lineWidth]int{2, 6, 0, 0, 5, 8, 0, 9, 0}
+
+	for i := 0; i < lineWidth; i++ {
+		if column[i].value != expected[i] {
+			t.Errorf("GetColumn value error at index: %d, expected: %d, got: %d", i, expected[i], column[i].value)
+		}
+	}
+}
+
 func TestGetCube(t *testing.T) {
 	puzzle := CreateTestPuzzle()
 	result := puzzle.GetCube(1, 1)
