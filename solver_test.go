@@ -37,3 +37,28 @@ func TestSolver3(t *testing.T) {
 		t.Errorf("Solver didn't solve (3) correctly, got: \n%s", result)
 	}
 }
+
+func TestOnlyOnePossibility(t *testing.T) {
+	tables := []struct {
+		possibility possibilies
+		onlyOne     bool
+		value       int
+	}{
+		{possibilies{true, true, false, false, false, false, false, false, false}, false, 0},
+		{possibilies{true, false, false, false, false, false, false, false, true}, false, 0},
+		{possibilies{true, true, true, true, true, true, true, true, true}, false, 0},
+		{possibilies{true, false, false, false, false, false, false, false, false}, true, 1},
+		{possibilies{false, false, false, false, false, false, false, false, true}, true, 9},
+		{possibilies{false, false, false, false, true, false, false, false, false}, true, 5},
+	}
+
+	for _, table := range tables {
+		onlyOne, value := onlyOnePossibility(table.possibility)
+		if onlyOne != table.onlyOne {
+			t.Errorf("onlyOnePossibility error for onlyOne, expected: %t, got: %t", table.onlyOne, onlyOne)
+		}
+		if value != table.value {
+			t.Errorf("onlyOnePossibility error for value, expected: %d, got: %d", table.value, value)
+		}
+	}
+}

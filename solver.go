@@ -40,35 +40,29 @@ func solveUniques(puz Puzzle) (bool, solution) {
 				continue
 			}
 
-			if hasOnlyOne(puz[x][y].possibilities) {
-				return true, solution{x: x, y: y, square: createPuzzleSquare(findOnlyValue(puz[x][y].possibilities))}
+			onlyOne, value := onlyOnePossibility(puz[x][y].possibilities)
+			if onlyOne {
+				return true, solution{x: x, y: y, square: createPuzzleSquare(value)}
 			}
 		}
 	}
 	return false, solution{}
 }
 
-func hasOnlyOne(poss possibilies) bool {
-	counter := 0
-	for _, v := range poss {
+func onlyOnePossibility(poss possibilies) (bool, int) {
+	counter, onlyOption := 0, 0
+
+	for i, v := range poss {
 		if v {
+			onlyOption = i + 1
 			counter++
 		}
 
 		if counter > 1 {
-			return false
+			return false, 0
 		}
 	}
-	return true
-}
-
-func findOnlyValue(poss possibilies) int {
-	for i, v := range poss {
-		if v {
-			return i + 1
-		}
-	}
-	return 0
+	return true, onlyOption
 }
 
 func solveRows(puz Puzzle) (bool, solution) {
