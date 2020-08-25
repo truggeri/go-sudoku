@@ -15,32 +15,21 @@ func Solve(puz Puzzle) Puzzle {
 	for true {
 		puz = puz.UpdatePossibilites()
 
-		solved, solution := solveUniques(puz)
-		if solved {
-			puz[solution.x][solution.y] = solution.square
-			continue
+		newSolution := false
+		var answer solution
+		techniques := [4]func(Puzzle) (bool, solution){solveUniques, solveRows, solveColumns, solveCubes}
+		for _, technique := range techniques {
+			newSolution, answer = technique(puz)
+			if newSolution {
+				puz[answer.x][answer.y] = answer.square
+				break
+			}
 		}
 
-		solved, solution = solveRows(puz)
-		if solved {
-			puz[solution.x][solution.y] = solution.square
-			continue
+		if !newSolution {
+			break
 		}
-
-		solved, solution = solveColumns(puz)
-		if solved {
-			puz[solution.x][solution.y] = solution.square
-			continue
-		}
-
-		solved, solution = solveCubes(puz)
-		if solved {
-			puz[solution.x][solution.y] = solution.square
-			continue
-		}
-		break
 	}
-
 	return puz
 }
 
