@@ -39,49 +39,59 @@ func (p Puzzle) GetCube(x, y int) PuzzleSet {
 	return result
 }
 
-func (p Puzzle) getCubeIndex(x, y int) int {
-	return (x%cubeWidth)*cubeWidth + (y % cubeWidth)
-}
+func (p Puzzle) calculatePossibilities() Puzzle {
+	var possByRow [lineWidth]possibilies
+	for row := 0; row < lineWidth; row++ {
+		possByRow[row] = findElementPossbilities(p.GetRow(row))
+	}
 
-// UpdatePossibilites Updates internal possibilities
-func (p Puzzle) UpdatePossibilites() Puzzle {
-	for i := 0; i < lineWidth; i++ {
-		for j := 0; j < lineWidth; j++ {
-			if !p[i][j].solved() {
-				p[i][j].possibilities = findPossibilities(p, i, j)
+	var possByColumn [lineWidth]possibilies
+	for col := 0; col < lineWidth; col++ {
+		possByColumn[col] = findElementPossbilities(p.GetColumn(col))
+	}
+
+	var possByCube [lineWidth]possibilies
+	for cube := 0; cube < lineWidth; cube++ {
+		possByCube[cube] = findElementPossbilities(p.GetCube(cubePosition(cube)))
+	}
+
+	for x := 0; x < lineWidth; x++ {
+		for y := 0; y < lineWidth; y++ {
+			if !p[x][y].solved() {
+				p[x][y].possibilities = mergePoss(possByRow[x], possByColumn[y], possByCube[cubeNumber(x, y)])
 			}
 		}
 	}
+
 	return p
 }
 
-func findPossibilities(puz Puzzle, x, y int) [lineWidth]bool {
-	rowPoss := findElementPossbilities(puz.GetRow(x), x)
-	colPoss := findElementPossbilities(puz.GetColumn(y), y)
-	cubePoss := findElementPossbilities(puz.GetCube(x, y), puz.getCubeIndex(x, y))
-
-	return mergePoss(rowPoss, colPoss, cubePoss)
+func cubePosition(cubeNumber int) (int, int) {
+	return (cubeNumber * cubeWidth) % lineWidth, (cubeNumber / cubeWidth) * cubeWidth
 }
 
-func findElementPossbilities(elements PuzzleSet, exclude int) [lineWidth]bool {
-	poss := [lineWidth]bool{true, true, true, true, true, true, true, true, true}
+func cubeNumber(x, y int) int {
+	return (x / cubeWidth) + (y/cubeWidth)*cubeWidth
+}
 
-	for i := range elements {
-		if i == exclude {
-			continue
-		}
+func findElementPossbilities(elements PuzzleSet) possibilies {
+	poss := possibilies{true, true, true, true, true, true, true, true, true}
 
-		if elements[i].solved() {
-			poss[elements[i].value-1] = false
+	for _, element := range elements {
+		if element.solved() {
+			poss[element.value-1] = false
 		}
 	}
 
 	return poss
 }
 
-func mergePoss(row, col, cube [lineWidth]bool) [lineWidth]bool {
-	var poss [lineWidth]bool
+func positionInCube(x, y int) int {
+	return (x%cubeWidth)*cubeWidth + (y % cubeWidth)
+}
 
+func mergePoss(row, col, cube possibilies) possibilies {
+	var poss possibilies
 	for i := range poss {
 		poss[i] = row[i] && col[i] && cube[i]
 	}

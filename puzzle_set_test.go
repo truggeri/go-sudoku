@@ -6,7 +6,7 @@ import (
 
 func TestSetPossibilities(t *testing.T) {
 	puzzle := CreateTestPuzzle()
-	puzzle = puzzle.UpdatePossibilites()
+	puzzle = puzzle.calculatePossibilities()
 	var set PuzzleSet = puzzle[0]
 
 	tables := []struct {

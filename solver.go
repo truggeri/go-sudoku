@@ -13,7 +13,7 @@ type solution struct {
 // Solve Returns the given puzzle with all elements solved
 func Solve(puz Puzzle) Puzzle {
 	for true {
-		puz = puz.UpdatePossibilites()
+		puz = puz.calculatePossibilities()
 
 		newSolution := false
 		var answer solution
@@ -48,7 +48,7 @@ func solveUniques(puz Puzzle) (bool, solution) {
 	return false, solution{}
 }
 
-func hasOnlyOne(poss [lineWidth]bool) bool {
+func hasOnlyOne(poss possibilies) bool {
 	counter := 0
 	for _, v := range poss {
 		if v {
@@ -62,7 +62,7 @@ func hasOnlyOne(poss [lineWidth]bool) bool {
 	return true
 }
 
-func findOnlyValue(poss [lineWidth]bool) int {
+func findOnlyValue(poss possibilies) int {
 	for i, v := range poss {
 		if v {
 			return i + 1
@@ -126,8 +126,6 @@ func solveCubes(puz Puzzle) (bool, solution) {
 	set := func(x, y int) PuzzleSet {
 		return puz.GetCube(x, y)
 	}
-	index := func(x, y int) int {
-		return puz.getCubeIndex(x, y)
-	}
+	index := positionInCube
 	return solveByElement(puz, solveTechnique{set, index})
 }
