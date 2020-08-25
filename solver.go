@@ -140,5 +140,22 @@ func solveColumns(puz Puzzle) (Puzzle, error) {
 }
 
 func solveCubes(puz Puzzle) (Puzzle, error) {
+	updatedFlag := false
+	var result PuzzleSet
+
+	for x := 0; x < lineWidth; x++ {
+		for y := 0; y < lineWidth; y++ {
+			if puz[x][y].solved() {
+				continue
+			}
+
+			indexInCube := puz.getCubeIndex(x, y)
+			updatedFlag, result = solveSet(puz.GetCube(x, y), indexInCube)
+			if updatedFlag {
+				puz[x][y] = result[indexInCube]
+				return puz, nil
+			}
+		}
+	}
 	return puz, errors.New("No elements solved")
 }
