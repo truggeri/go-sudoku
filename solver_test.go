@@ -2,7 +2,7 @@ package main
 
 import "testing"
 
-func TestSolver(t *testing.T) {
+func TestSolver1(t *testing.T) {
 	puzzle := CreateTestPuzzle()
 	result := Solve(puzzle)
 	expectedString := `6 3 8 2 9 1 7 4 5
@@ -16,6 +16,24 @@ func TestSolver(t *testing.T) {
 2 7 3 1 5 8 4 9 6`
 
 	if result.String() != expectedString {
-		t.Errorf("Solver didn't solve correctly, got: \n%s", result)
+		t.Errorf("Solver didn't solve (1) correctly, got: \n%s", result)
+	}
+}
+
+func TestSolver3(t *testing.T) {
+	puzzle := CreateTestPuzzle3()
+	result := Solve(puzzle)
+	expectedString := `6 5 3 7 9 2 8 1 4
+1 9 8 5 3 4 7 2 6
+7 2 4 8 6 1 5 9 3
+9 8 6 4 1 7 3 5 2
+4 3 7 2 5 9 1 6 8
+5 1 2 3 8 6 4 7 9
+8 7 1 9 2 3 6 4 5
+3 4 9 6 7 5 2 8 1
+2 6 5 1 4 8 9 3 7`
+
+	if result.String() != expectedString {
+		t.Errorf("Solver didn't solve (3) correctly, got: \n%s", result)
 	}
 }
