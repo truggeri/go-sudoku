@@ -4,6 +4,11 @@ import (
 	"errors"
 )
 
+type solveTechnique struct {
+	set   func(int, int) PuzzleSet
+	index func(int, int) int
+}
+
 // Solve Solves a given puzzle
 func Solve(puz Puzzle) Puzzle {
 	for true {
@@ -83,17 +88,24 @@ func findOnlyValue(poss [lineWidth]bool) int {
 }
 
 func solveRows(puz Puzzle) (Puzzle, error) {
-	updatedFlag := false
-	var result PuzzleSquare
+	set := func(x, y int) PuzzleSet {
+		return puz.GetRow(x)
+	}
+	index := func(x, y int) int {
+		return y
+	}
+	return solveByElement(puz, solveTechnique{set, index})
+}
 
+func solveByElement(puz Puzzle, st solveTechnique) (Puzzle, error) {
 	for x := 0; x < lineWidth; x++ {
 		for y := 0; y < lineWidth; y++ {
 			if puz[x][y].solved() {
 				continue
 			}
 
-			updatedFlag, result = solveSet(puz.GetRow(x), y)
-			if updatedFlag {
+			updated, result := solveSet(st.set(x, y), st.index(x, y))
+			if updated {
 				puz[x][y] = result
 				return puz, nil
 			}
@@ -119,41 +131,21 @@ func solveSet(set PuzzleSet, i int) (bool, PuzzleSquare) {
 }
 
 func solveColumns(puz Puzzle) (Puzzle, error) {
-	updatedFlag := false
-	var result PuzzleSquare
-
-	for x := 0; x < lineWidth; x++ {
-		for y := 0; y < lineWidth; y++ {
-			if puz[x][y].solved() {
-				continue
-			}
-
-			updatedFlag, result = solveSet(puz.GetColumn(y), x)
-			if updatedFlag {
-				puz[x][y] = result
-				return puz, nil
-			}
-		}
+	set := func(x, y int) PuzzleSet {
+		return puz.GetColumn(y)
 	}
-	return puz, errors.New("No elements solved by column")
+	index := func(x, y int) int {
+		return x
+	}
+	return solveByElement(puz, solveTechnique{set, index})
 }
 
 func solveCubes(puz Puzzle) (Puzzle, error) {
-	updatedFlag := false
-	var result PuzzleSquare
-
-	for x := 0; x < lineWidth; x++ {
-		for y := 0; y < lineWidth; y++ {
-			if puz[x][y].solved() {
-				continue
-			}
-
-			updatedFlag, result = solveSet(puz.GetCube(x, y), puz.getCubeIndex(x, y))
-			if updatedFlag {
-				puz[x][y] = result
-				return puz, nil
-			}
-		}
+	set := func(x, y int) PuzzleSet {
+		return puz.GetCube(x, y)
 	}
-	return puz, errors.New("No elements solved")
+	index := func(x, y int) int {
+		return puz.getCubeIndex(x, y)
+	}
+	return solveByElement(puz, solveTechnique{set, index})
 }
