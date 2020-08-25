@@ -1,9 +1,5 @@
 package main
 
-import (
-	"errors"
-)
-
 type solveTechnique struct {
 	set   func(int, int) PuzzleSet
 	index func(int, int) int
@@ -14,18 +10,18 @@ type solution struct {
 	square PuzzleSquare
 }
 
-// Solve Solves a given puzzle
+// Solve Returns the given puzzle with all elements solved
 func Solve(puz Puzzle) Puzzle {
 	for true {
-		var err error
-
 		puz = puz.UpdatePossibilites()
-		puz, err = solveUniques(puz)
-		if err == nil {
+
+		solved, solution := solveUniques(puz)
+		if solved {
+			puz[solution.x][solution.y] = solution.square
 			continue
 		}
 
-		solved, solution := solveRows(puz)
+		solved, solution = solveRows(puz)
 		if solved {
 			puz[solution.x][solution.y] = solution.square
 			continue
@@ -48,9 +44,7 @@ func Solve(puz Puzzle) Puzzle {
 	return puz
 }
 
-func solveUniques(puz Puzzle) (Puzzle, error) {
-	updatedFlag := false
-
+func solveUniques(puz Puzzle) (bool, solution) {
 	for x := 0; x < lineWidth; x++ {
 		for y := 0; y < lineWidth; y++ {
 			if puz[x][y].solved() {
@@ -58,17 +52,11 @@ func solveUniques(puz Puzzle) (Puzzle, error) {
 			}
 
 			if hasOnlyOne(puz[x][y].possibilities) {
-				puz[x][y].value = findOnlyValue(puz[x][y].possibilities)
-				updatedFlag = true
+				return true, solution{x: x, y: y, square: createPuzzleSquare(findOnlyValue(puz[x][y].possibilities))}
 			}
 		}
 	}
-
-	if !updatedFlag {
-		return puz, errors.New("No elements solved")
-	}
-
-	return puz, nil
+	return false, solution{}
 }
 
 func hasOnlyOne(poss [lineWidth]bool) bool {
@@ -113,7 +101,6 @@ func solveByElement(puz Puzzle, st solveTechnique) (bool, solution) {
 
 			updated, result := solveSet(st.set(x, y), st.index(x, y))
 			if updated {
-				puz[x][y] = result
 				return true, solution{x: x, y: y, square: result}
 			}
 		}
@@ -127,10 +114,9 @@ func solveSet(set PuzzleSet, i int) (bool, PuzzleSquare) {
 	}
 
 	setOptions := set.Possibilities(i)
-	for j, possInSet := range setOptions {
-		if set[i].possibilities[j] && !possInSet {
-			set[i].value = j + 1
-			return true, set[i]
+	for j := range setOptions {
+		if set[i].possibilities[j] && !setOptions[j] {
+			return true, createPuzzleSquare(j + 1)
 		}
 	}
 
