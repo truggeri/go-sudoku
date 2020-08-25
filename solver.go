@@ -9,6 +9,11 @@ type solveTechnique struct {
 	index func(int, int) int
 }
 
+type solution struct {
+	x, y   int
+	square PuzzleSquare
+}
+
 // Solve Solves a given puzzle
 func Solve(puz Puzzle) Puzzle {
 	for true {
@@ -20,21 +25,23 @@ func Solve(puz Puzzle) Puzzle {
 			continue
 		}
 
-		puz, err = solveRows(puz)
-		if err == nil {
+		solved, solution := solveRows(puz)
+		if solved {
+			puz[solution.x][solution.y] = solution.square
 			continue
 		}
 
-		puz, err = solveColumns(puz)
-		if err == nil {
+		solved, solution = solveColumns(puz)
+		if solved {
+			puz[solution.x][solution.y] = solution.square
 			continue
 		}
 
-		puz, err = solveCubes(puz)
-		if err == nil {
+		solved, solution = solveCubes(puz)
+		if solved {
+			puz[solution.x][solution.y] = solution.square
 			continue
 		}
-
 		break
 	}
 
@@ -87,7 +94,7 @@ func findOnlyValue(poss [lineWidth]bool) int {
 	return 0
 }
 
-func solveRows(puz Puzzle) (Puzzle, error) {
+func solveRows(puz Puzzle) (bool, solution) {
 	set := func(x, y int) PuzzleSet {
 		return puz.GetRow(x)
 	}
@@ -97,7 +104,7 @@ func solveRows(puz Puzzle) (Puzzle, error) {
 	return solveByElement(puz, solveTechnique{set, index})
 }
 
-func solveByElement(puz Puzzle, st solveTechnique) (Puzzle, error) {
+func solveByElement(puz Puzzle, st solveTechnique) (bool, solution) {
 	for x := 0; x < lineWidth; x++ {
 		for y := 0; y < lineWidth; y++ {
 			if puz[x][y].solved() {
@@ -107,11 +114,11 @@ func solveByElement(puz Puzzle, st solveTechnique) (Puzzle, error) {
 			updated, result := solveSet(st.set(x, y), st.index(x, y))
 			if updated {
 				puz[x][y] = result
-				return puz, nil
+				return true, solution{x: x, y: y, square: result}
 			}
 		}
 	}
-	return puz, errors.New("No elements solved by row")
+	return false, solution{}
 }
 
 func solveSet(set PuzzleSet, i int) (bool, PuzzleSquare) {
@@ -130,7 +137,7 @@ func solveSet(set PuzzleSet, i int) (bool, PuzzleSquare) {
 	return false, set[i]
 }
 
-func solveColumns(puz Puzzle) (Puzzle, error) {
+func solveColumns(puz Puzzle) (bool, solution) {
 	set := func(x, y int) PuzzleSet {
 		return puz.GetColumn(y)
 	}
@@ -140,7 +147,7 @@ func solveColumns(puz Puzzle) (Puzzle, error) {
 	return solveByElement(puz, solveTechnique{set, index})
 }
 
-func solveCubes(puz Puzzle) (Puzzle, error) {
+func solveCubes(puz Puzzle) (bool, solution) {
 	set := func(x, y int) PuzzleSet {
 		return puz.GetCube(x, y)
 	}
