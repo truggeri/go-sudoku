@@ -21,3 +21,12 @@ func BenchmarkSolverMedium(b *testing.B) {
 	}
 	result = r
 }
+
+func BenchmarkSolverHard(b *testing.B) {
+	var r Puzzle
+	puzzle := CreateTestPuzzleHard()
+	for n := 0; n < b.N; n++ {
+		r = Solve(puzzle)
+	}
+	result = r
+}

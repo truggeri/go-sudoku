@@ -16,7 +16,7 @@ func TestSolverEasy(t *testing.T) {
 2 7 3 1 5 8 4 9 6`
 
 	if result.String() != expectedString {
-		t.Errorf("Solver didn't solve (1) correctly, got: \n%s", result)
+		t.Errorf("Solver didn't solve easy puzzle correctly, got: \n%s", result)
 	}
 }
 
@@ -34,7 +34,25 @@ func TestSolverMedium(t *testing.T) {
 2 6 5 1 4 8 9 3 7`
 
 	if result.String() != expectedString {
-		t.Errorf("Solver didn't solve (3) correctly, got: \n%s", result)
+		t.Errorf("Solver didn't solve medium puzzle correctly, got: \n%s", result)
+	}
+}
+
+func TestSolverHard(t *testing.T) {
+	puzzle := CreateTestPuzzleHard()
+	result := Solve(puzzle)
+	expectedString := `7 8 2 4 3 5 1 9 6
+6 9 4 1 7 2 3 8 5
+5 1 3 6 8 9 4 2 7
+8 4 7 2 5 3 9 6 1
+9 2 6 8 4 1 5 7 3
+1 3 5 7 9 6 8 4 2
+2 6 9 5 1 8 7 3 4
+4 5 8 3 6 7 2 1 9
+3 7 1 9 2 4 6 5 8`
+
+	if result.String() != expectedString {
+		t.Errorf("Solver didn't solve hard puzzle correctly, got: \n%s", result)
 	}
 }
 

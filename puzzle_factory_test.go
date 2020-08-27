@@ -43,3 +43,25 @@ func CreateTestPuzzleMedium() Puzzle {
 
 	return puzzle
 }
+
+func CreateTestPuzzleHard() Puzzle {
+	var puzzle Puzzle
+	data := [lineWidth][lineWidth]int{
+		{7, 0, 2, 0, 3, 0, 0, 0, 0},
+		{6, 0, 0, 1, 0, 2, 0, 8, 0},
+		{0, 1, 0, 0, 0, 0, 4, 0, 0},
+		{0, 0, 0, 0, 0, 0, 9, 6, 0},
+		{0, 0, 6, 8, 4, 1, 5, 0, 0},
+		{0, 3, 5, 0, 0, 0, 0, 0, 0},
+		{0, 0, 9, 0, 0, 0, 0, 3, 0},
+		{0, 5, 0, 3, 0, 7, 0, 0, 9},
+		{0, 0, 0, 0, 2, 0, 6, 0, 8}}
+
+	for i, v := range data {
+		for j, c := range v {
+			puzzle[i][j] = createPuzzleSquare(c)
+		}
+	}
+
+	return puzzle
+}
