@@ -1,6 +1,6 @@
 package main
 
-func CreateTestPuzzle() Puzzle {
+func CreateTestPuzzleEasy() Puzzle {
 	var puzzle Puzzle
 	data := [lineWidth][lineWidth]int{
 		{0, 3, 8, 2, 0, 0, 0, 4, 5},
@@ -22,7 +22,7 @@ func CreateTestPuzzle() Puzzle {
 	return puzzle
 }
 
-func CreateTestPuzzle3() Puzzle {
+func CreateTestPuzzleMedium() Puzzle {
 	var puzzle Puzzle
 	data := [lineWidth][lineWidth]int{
 		{0, 0, 3, 0, 0, 2, 8, 0, 0},

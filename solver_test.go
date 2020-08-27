@@ -2,8 +2,8 @@ package main
 
 import "testing"
 
-func TestSolver1(t *testing.T) {
-	puzzle := CreateTestPuzzle()
+func TestSolverEasy(t *testing.T) {
+	puzzle := CreateTestPuzzleEasy()
 	result := Solve(puzzle)
 	expectedString := `6 3 8 2 9 1 7 4 5
 4 1 9 6 7 5 2 8 3
@@ -20,8 +20,8 @@ func TestSolver1(t *testing.T) {
 	}
 }
 
-func TestSolver3(t *testing.T) {
-	puzzle := CreateTestPuzzle3()
+func TestSolverMedium(t *testing.T) {
+	puzzle := CreateTestPuzzleMedium()
 	result := Solve(puzzle)
 	expectedString := `6 5 3 7 9 2 8 1 4
 1 9 8 5 3 4 7 2 6

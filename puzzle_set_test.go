@@ -5,7 +5,7 @@ import (
 )
 
 func TestSetPossibilities(t *testing.T) {
-	puzzle := CreateTestPuzzle()
+	puzzle := CreateTestPuzzleEasy()
 	puzzle = puzzle.calculatePossibilities()
 	var set PuzzleSet = puzzle[0]
 

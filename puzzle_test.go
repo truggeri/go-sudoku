@@ -5,7 +5,7 @@ import (
 )
 
 func TestGetRow(t *testing.T) {
-	puzzle := CreateTestPuzzle()
+	puzzle := CreateTestPuzzleEasy()
 	row := puzzle.GetRow(0)
 	expected := [lineWidth]int{0, 3, 8, 2, 0, 0, 0, 4, 5}
 
@@ -17,7 +17,7 @@ func TestGetRow(t *testing.T) {
 }
 
 func TestGetColumn(t *testing.T) {
-	puzzle := CreateTestPuzzle()
+	puzzle := CreateTestPuzzleEasy()
 	column := puzzle.GetColumn(3)
 	expected := [lineWidth]int{2, 6, 0, 0, 5, 8, 0, 9, 0}
 
@@ -29,7 +29,7 @@ func TestGetColumn(t *testing.T) {
 }
 
 func TestGetCube(t *testing.T) {
-	puzzle := CreateTestPuzzle()
+	puzzle := CreateTestPuzzleEasy()
 	result := puzzle.GetCube(1, 1)
 	expected := [lineWidth]int{0, 3, 8, 0, 1, 0, 5, 0, 7}
 
@@ -140,7 +140,7 @@ func TestFindElementPossbilities(t *testing.T) {
 }
 
 func TestString(t *testing.T) {
-	puzzle := CreateTestPuzzle()
+	puzzle := CreateTestPuzzleEasy()
 
 	expectedString := `- 3 8 2 - - - 4 5
 - 1 - 6 - 5 - - -
