@@ -27,6 +27,14 @@ go run . <file>
 go test
 ```
 
+## Benchmarks
+
+There are a few benchmarks that are useful when making changes to the algorithm.
+
+```bash
+go test -run=^$ -bench ^Benchmark
+```
+
 ## Algorithm
 
 This section will describe the algorithm used to solve the puzzels. The basic idea is this.
