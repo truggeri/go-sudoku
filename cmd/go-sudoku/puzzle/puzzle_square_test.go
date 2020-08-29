@@ -1,4 +1,4 @@
-package main
+package puzzle
 
 import "testing"
 
@@ -15,9 +15,9 @@ func TestSolved(t *testing.T) {
 	}
 
 	for _, table := range tables {
-		square.value = table.val
-		if square.solved() != table.solved {
-			t.Errorf("PuzzleSquare with value %d, not solved correctly, got: %t, want: %t.", square.value, square.solved(), table.solved)
+		square.Value = table.val
+		if square.Solved() != table.solved {
+			t.Errorf("PuzzleSquare with value %d, not solved correctly, got: %t, want: %t.", square.Value, square.Solved(), table.solved)
 		}
 	}
 }
@@ -33,14 +33,14 @@ func TestCreatePuzzleSquare(t *testing.T) {
 	}
 
 	for _, table := range tables {
-		result := createPuzzleSquare(table.val)
-		if result.value != table.val {
-			t.Errorf("PuzzleSquare value not expected, got: %d, want: %d.", result.value, table.val)
+		result := CreatePuzzleSquare(table.val)
+		if result.Value != table.val {
+			t.Errorf("PuzzleSquare value not expected, got: %d, want: %d.", result.Value, table.val)
 		}
 
 		if table.checkPoss {
 			possReduction := true
-			for _, p := range result.possibilities {
+			for _, p := range result.Possibilities {
 				possReduction = possReduction && p
 			}
 

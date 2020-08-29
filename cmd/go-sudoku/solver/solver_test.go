@@ -1,6 +1,10 @@
-package main
+package solver
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/truggeri/go-sudoku/cmd/go-sudoku/puzzle"
+)
 
 func TestSolverEasy(t *testing.T) {
 	puzzle := CreateTestPuzzleEasy()
@@ -58,16 +62,16 @@ func TestSolverHard(t *testing.T) {
 
 func TestOnlyOnePossibility(t *testing.T) {
 	tables := []struct {
-		possibility possibilies
+		possibility puzzle.Possibilies
 		onlyOne     bool
 		value       int
 	}{
-		{possibilies{true, true, false, false, false, false, false, false, false}, false, 0},
-		{possibilies{true, false, false, false, false, false, false, false, true}, false, 0},
-		{possibilies{true, true, true, true, true, true, true, true, true}, false, 0},
-		{possibilies{true, false, false, false, false, false, false, false, false}, true, 1},
-		{possibilies{false, false, false, false, false, false, false, false, true}, true, 9},
-		{possibilies{false, false, false, false, true, false, false, false, false}, true, 5},
+		{puzzle.Possibilies{true, true, false, false, false, false, false, false, false}, false, 0},
+		{puzzle.Possibilies{true, false, false, false, false, false, false, false, true}, false, 0},
+		{puzzle.Possibilies{true, true, true, true, true, true, true, true, true}, false, 0},
+		{puzzle.Possibilies{true, false, false, false, false, false, false, false, false}, true, 1},
+		{puzzle.Possibilies{false, false, false, false, false, false, false, false, true}, true, 9},
+		{puzzle.Possibilies{false, false, false, false, true, false, false, false, false}, true, 5},
 	}
 
 	for _, table := range tables {

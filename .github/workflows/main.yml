@@ -20,11 +20,11 @@ jobs:
       with:
         go-version: 1.13
     - name: Test
-      run: go test -cover
+      run: go test ./cmd/go-sudoku/... -cover
     - name: Benchmark
-      run: go test -run=^$ -bench ^Benchmark
+      run: go test ./cmd/go-sudoku/solver/... -run=^$ -bench ^Benchmark
     - name: Build
-      run: go build -o output/go-sudoku .
+      run: go build -o output/go-sudoku cmd/go-sudoku/main.go
     - name: Upload
       uses: actions/upload-artifact@v2
       with:

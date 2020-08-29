@@ -1,4 +1,4 @@
-package main
+package input
 
 import (
 	"errors"
@@ -6,10 +6,13 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/truggeri/go-sudoku/cmd/go-sudoku/puzzle"
 )
 
-func loadInput() (Puzzle, error) {
-	var nums Puzzle
+// LoadInput Creates Puzzle from a file path
+func LoadInput() (puzzle.Puzzle, error) {
+	var nums puzzle.Puzzle
 
 	argsWithoutProg := os.Args[1:]
 	if len(argsWithoutProg) == 0 {
@@ -37,8 +40,8 @@ func loadInput() (Puzzle, error) {
 	return nums, nil
 }
 
-func splitLine(line string) ([lineWidth]PuzzleSquare, error) {
-	var row [lineWidth]PuzzleSquare
+func splitLine(line string) ([puzzle.LineWidth]puzzle.PuzzleSquare, error) {
+	var row [puzzle.LineWidth]puzzle.PuzzleSquare
 	values := strings.Split(line, " ")
 
 	for i, v := range values {
@@ -47,7 +50,7 @@ func splitLine(line string) ([lineWidth]PuzzleSquare, error) {
 			return row, err
 		}
 
-		row[i] = createPuzzleSquare(n)
+		row[i] = puzzle.CreatePuzzleSquare(n)
 	}
 
 	return row, nil

@@ -1,4 +1,4 @@
-package main
+package puzzle
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 
 func TestSetPossibilities(t *testing.T) {
 	puzzle := CreateTestPuzzleEasy()
-	puzzle = puzzle.calculatePossibilities()
+	puzzle = puzzle.CalculatePossibilities()
 	var set PuzzleSet = puzzle[0]
 
 	tables := []struct {

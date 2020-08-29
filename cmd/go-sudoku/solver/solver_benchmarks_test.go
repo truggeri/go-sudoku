@@ -1,11 +1,15 @@
-package main
+package solver
 
-import "testing"
+import (
+	"testing"
 
-var result Puzzle
+	"github.com/truggeri/go-sudoku/cmd/go-sudoku/puzzle"
+)
+
+var result puzzle.Puzzle
 
 func BenchmarkSolverEasy(b *testing.B) {
-	var r Puzzle
+	var r puzzle.Puzzle
 	puzzle := CreateTestPuzzleEasy()
 	for n := 0; n < b.N; n++ {
 		r = Solve(puzzle)
@@ -14,7 +18,7 @@ func BenchmarkSolverEasy(b *testing.B) {
 }
 
 func BenchmarkSolverMedium(b *testing.B) {
-	var r Puzzle
+	var r puzzle.Puzzle
 	puzzle := CreateTestPuzzleMedium()
 	for n := 0; n < b.N; n++ {
 		r = Solve(puzzle)
@@ -23,7 +27,7 @@ func BenchmarkSolverMedium(b *testing.B) {
 }
 
 func BenchmarkSolverHard(b *testing.B) {
-	var r Puzzle
+	var r puzzle.Puzzle
 	puzzle := CreateTestPuzzleHard()
 	for n := 0; n < b.N; n++ {
 		r = Solve(puzzle)

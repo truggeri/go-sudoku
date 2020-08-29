@@ -11,20 +11,20 @@ When learning a new language, I often go for a Sudoku solver application. This i
 ## Run
 
 ```bash
-go build
-./go-sudoku <file>
+go build -o output/go-sudoku cmd/go-sudoku/main.go
+./output/go-sudoku <file>
 ```
 
 or
 
 ```bash
-go run . <file>
+go run cmd/go-sudoku/main.go <file>
 ```
 
 ## Test
 
 ```bash
-go test
+go test ./cmd/go-sudoku/...
 ```
 
 ## Benchmarks
@@ -32,7 +32,7 @@ go test
 There are a few benchmarks that are useful when making changes to the algorithm.
 
 ```bash
-go test -run=^$ -bench ^Benchmark
+go test ./cmd/go-sudoku/solver/... -run=^$ -bench ^Benchmark
 ```
 
 ## Algorithm

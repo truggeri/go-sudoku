@@ -1,4 +1,4 @@
-package main
+package puzzle
 
 import (
 	"testing"
@@ -7,11 +7,11 @@ import (
 func TestGetRow(t *testing.T) {
 	puzzle := CreateTestPuzzleEasy()
 	row := puzzle.GetRow(0)
-	expected := [lineWidth]int{0, 3, 8, 2, 0, 0, 0, 4, 5}
+	expected := [LineWidth]int{0, 3, 8, 2, 0, 0, 0, 4, 5}
 
-	for i := 0; i < lineWidth; i++ {
-		if row[i].value != expected[i] {
-			t.Errorf("GetRow value error at index: %d, expected: %d, got: %d", i, expected[i], row[i].value)
+	for i := 0; i < LineWidth; i++ {
+		if row[i].Value != expected[i] {
+			t.Errorf("GetRow value error at index: %d, expected: %d, got: %d", i, expected[i], row[i].Value)
 		}
 	}
 }
@@ -19,11 +19,11 @@ func TestGetRow(t *testing.T) {
 func TestGetColumn(t *testing.T) {
 	puzzle := CreateTestPuzzleEasy()
 	column := puzzle.GetColumn(3)
-	expected := [lineWidth]int{2, 6, 0, 0, 5, 8, 0, 9, 0}
+	expected := [LineWidth]int{2, 6, 0, 0, 5, 8, 0, 9, 0}
 
-	for i := 0; i < lineWidth; i++ {
-		if column[i].value != expected[i] {
-			t.Errorf("GetColumn value error at index: %d, expected: %d, got: %d", i, expected[i], column[i].value)
+	for i := 0; i < LineWidth; i++ {
+		if column[i].Value != expected[i] {
+			t.Errorf("GetColumn value error at index: %d, expected: %d, got: %d", i, expected[i], column[i].Value)
 		}
 	}
 }
@@ -31,11 +31,11 @@ func TestGetColumn(t *testing.T) {
 func TestGetCube(t *testing.T) {
 	puzzle := CreateTestPuzzleEasy()
 	result := puzzle.GetCube(1, 1)
-	expected := [lineWidth]int{0, 3, 8, 0, 1, 0, 5, 0, 7}
+	expected := [LineWidth]int{0, 3, 8, 0, 1, 0, 5, 0, 7}
 
 	for i, v := range expected {
-		if result[i].value != v {
-			t.Errorf("GetCube value error at index: %d, expected: %d, got: %d", i, v, result[i].value)
+		if result[i].Value != v {
+			t.Errorf("GetCube value error at index: %d, expected: %d, got: %d", i, v, result[i].Value)
 		}
 	}
 }
@@ -57,7 +57,7 @@ func TestPositionInCube(t *testing.T) {
 	}
 
 	for _, v := range tables {
-		result := positionInCube(v.x, v.y)
+		result := PositionInCube(v.x, v.y)
 		if result != v.index {
 			t.Errorf("positionInCube error for (%d, %d), expected: %d, got: %d", v.x, v.y, v.index, result)
 		}
@@ -120,13 +120,13 @@ func TestCubeNumber(t *testing.T) {
 func TestFindElementPossbilities(t *testing.T) {
 	tables := []struct {
 		elements PuzzleSet
-		expected possibilies
+		expected Possibilies
 	}{
 		{PuzzleSet{
-			createPuzzleSquare(1), createPuzzleSquare(2), createPuzzleSquare(0),
-			createPuzzleSquare(4), createPuzzleSquare(0), createPuzzleSquare(6),
-			createPuzzleSquare(0), createPuzzleSquare(8), createPuzzleSquare(9),
-		}, possibilies{false, false, true, false, true, false, true, false, false}},
+			CreatePuzzleSquare(1), CreatePuzzleSquare(2), CreatePuzzleSquare(0),
+			CreatePuzzleSquare(4), CreatePuzzleSquare(0), CreatePuzzleSquare(6),
+			CreatePuzzleSquare(0), CreatePuzzleSquare(8), CreatePuzzleSquare(9),
+		}, Possibilies{false, false, true, false, true, false, true, false, false}},
 	}
 
 	for _, table := range tables {

@@ -1,8 +1,10 @@
-package main
+package solver
 
-func CreateTestPuzzleEasy() Puzzle {
-	var puzzle Puzzle
-	data := [lineWidth][lineWidth]int{
+import "github.com/truggeri/go-sudoku/cmd/go-sudoku/puzzle"
+
+func CreateTestPuzzleEasy() puzzle.Puzzle {
+	var puz puzzle.Puzzle
+	data := [puzzle.LineWidth][puzzle.LineWidth]int{
 		{0, 3, 8, 2, 0, 0, 0, 4, 5},
 		{0, 1, 0, 6, 0, 5, 0, 0, 0},
 		{5, 0, 7, 0, 8, 0, 0, 0, 0},
@@ -15,16 +17,16 @@ func CreateTestPuzzleEasy() Puzzle {
 
 	for i, v := range data {
 		for j, c := range v {
-			puzzle[i][j] = createPuzzleSquare(c)
+			puz[i][j] = puzzle.CreatePuzzleSquare(c)
 		}
 	}
 
-	return puzzle
+	return puz
 }
 
-func CreateTestPuzzleMedium() Puzzle {
-	var puzzle Puzzle
-	data := [lineWidth][lineWidth]int{
+func CreateTestPuzzleMedium() puzzle.Puzzle {
+	var puz puzzle.Puzzle
+	data := [puzzle.LineWidth][puzzle.LineWidth]int{
 		{0, 0, 3, 0, 0, 2, 8, 0, 0},
 		{1, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 2, 0, 8, 6, 0, 0, 9, 0},
@@ -37,16 +39,16 @@ func CreateTestPuzzleMedium() Puzzle {
 
 	for i, v := range data {
 		for j, c := range v {
-			puzzle[i][j] = createPuzzleSquare(c)
+			puz[i][j] = puzzle.CreatePuzzleSquare(c)
 		}
 	}
 
-	return puzzle
+	return puz
 }
 
-func CreateTestPuzzleHard() Puzzle {
-	var puzzle Puzzle
-	data := [lineWidth][lineWidth]int{
+func CreateTestPuzzleHard() puzzle.Puzzle {
+	var puz puzzle.Puzzle
+	data := [puzzle.LineWidth][puzzle.LineWidth]int{
 		{7, 0, 2, 0, 3, 0, 0, 0, 0},
 		{6, 0, 0, 1, 0, 2, 0, 8, 0},
 		{0, 1, 0, 0, 0, 0, 4, 0, 0},
@@ -59,9 +61,9 @@ func CreateTestPuzzleHard() Puzzle {
 
 	for i, v := range data {
 		for j, c := range v {
-			puzzle[i][j] = createPuzzleSquare(c)
+			puz[i][j] = puzzle.CreatePuzzleSquare(c)
 		}
 	}
 
-	return puzzle
+	return puz
 }

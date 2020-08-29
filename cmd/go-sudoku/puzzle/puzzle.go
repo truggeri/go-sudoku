@@ -1,15 +1,16 @@
-package main
+package puzzle
 
 import (
 	"fmt"
 	"strings"
 )
 
-const lineWidth = 9
-const cubeWidth = lineWidth / 3
+// LineWidth the number of cells in each row, column and cube
+const LineWidth = 9
+const cubeWidth = LineWidth / 3
 
 // Puzzle Representation of a Sudoku puzzle
-type Puzzle [lineWidth][lineWidth]PuzzleSquare
+type Puzzle [LineWidth][LineWidth]PuzzleSquare
 
 // GetRow returns a given row
 func (p Puzzle) GetRow(i int) PuzzleSet {
@@ -19,7 +20,7 @@ func (p Puzzle) GetRow(i int) PuzzleSet {
 // GetColumn returns a column by given index
 func (p Puzzle) GetColumn(i int) PuzzleSet {
 	var column PuzzleSet
-	for x := 0; x < lineWidth; x++ {
+	for x := 0; x < LineWidth; x++ {
 		column[x] = p[x][i]
 	}
 	return column
@@ -39,26 +40,27 @@ func (p Puzzle) GetCube(x, y int) PuzzleSet {
 	return result
 }
 
-func (p Puzzle) calculatePossibilities() Puzzle {
-	var possByRow [lineWidth]possibilies
-	for row := 0; row < lineWidth; row++ {
+// CalculatePossibilities Gives puzzle with updated possibility values
+func (p Puzzle) CalculatePossibilities() Puzzle {
+	var possByRow [LineWidth]Possibilies
+	for row := 0; row < LineWidth; row++ {
 		possByRow[row] = findElementPossbilities(p.GetRow(row))
 	}
 
-	var possByColumn [lineWidth]possibilies
-	for col := 0; col < lineWidth; col++ {
+	var possByColumn [LineWidth]Possibilies
+	for col := 0; col < LineWidth; col++ {
 		possByColumn[col] = findElementPossbilities(p.GetColumn(col))
 	}
 
-	var possByCube [lineWidth]possibilies
-	for cube := 0; cube < lineWidth; cube++ {
+	var possByCube [LineWidth]Possibilies
+	for cube := 0; cube < LineWidth; cube++ {
 		possByCube[cube] = findElementPossbilities(p.GetCube(cubePosition(cube)))
 	}
 
-	for x := 0; x < lineWidth; x++ {
-		for y := 0; y < lineWidth; y++ {
-			if !p[x][y].solved() {
-				p[x][y].possibilities = mergePoss(possByRow[x], possByColumn[y], possByCube[cubeNumber(x, y)])
+	for x := 0; x < LineWidth; x++ {
+		for y := 0; y < LineWidth; y++ {
+			if !p[x][y].Solved() {
+				p[x][y].Possibilities = mergePoss(possByRow[x], possByColumn[y], possByCube[cubeNumber(x, y)])
 			}
 		}
 	}
@@ -67,35 +69,36 @@ func (p Puzzle) calculatePossibilities() Puzzle {
 }
 
 func cubePosition(cubeNumber int) (int, int) {
-	return (cubeNumber * cubeWidth) % lineWidth, (cubeNumber / cubeWidth) * cubeWidth
+	return (cubeNumber * cubeWidth) % LineWidth, (cubeNumber / cubeWidth) * cubeWidth
 }
 
 func cubeNumber(x, y int) int {
 	return (x / cubeWidth) + (y/cubeWidth)*cubeWidth
 }
 
-func findElementPossbilities(elements PuzzleSet) possibilies {
-	poss := possibilies{true, true, true, true, true, true, true, true, true}
+func findElementPossbilities(elements PuzzleSet) Possibilies {
+	poss := Possibilies{true, true, true, true, true, true, true, true, true}
 
 	for _, element := range elements {
-		if element.solved() {
-			poss[element.value-1] = false
+		if element.Solved() {
+			poss[element.Value-1] = false
 		}
 	}
 
 	return poss
 }
 
-func positionInCube(x, y int) int {
+// PositionInCube Given an x,y, gives the position in a set
+func PositionInCube(x, y int) int {
 	return (x%cubeWidth)*cubeWidth + (y % cubeWidth)
 }
 
-func mergePoss(row, col, cube possibilies) possibilies {
-	var poss possibilies
-	for i := range poss {
-		poss[i] = row[i] && col[i] && cube[i]
+func mergePoss(row, col, cube Possibilies) Possibilies {
+	var result Possibilies
+	for i := range result {
+		result[i] = row[i] && col[i] && cube[i]
 	}
-	return poss
+	return result
 }
 
 func (p Puzzle) String() string {
@@ -104,8 +107,8 @@ func (p Puzzle) String() string {
 	for _, r := range p {
 		var line []string
 		for _, v := range r {
-			if v.solved() {
-				line = append(line, fmt.Sprintf("%v", v.value))
+			if v.Solved() {
+				line = append(line, fmt.Sprintf("%v", v.Value))
 			} else {
 				line = append(line, "-")
 			}

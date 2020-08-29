@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/truggeri/go-sudoku/cmd/go-sudoku/input"
+	"github.com/truggeri/go-sudoku/cmd/go-sudoku/solver"
 )
 
 func main() {
@@ -14,13 +17,13 @@ func main() {
 }
 
 func run() error {
-	puz, err := loadInput()
+	puz, err := input.LoadInput()
 	if err != nil {
 		return err
 	}
 
 	fmt.Println(puz)
-	result := Solve(puz)
+	result := solver.Solve(puz)
 	fmt.Println("-----------------")
 	fmt.Println(result)
 
