@@ -3,7 +3,7 @@ package puzzle
 import "testing"
 
 func TestSolved(t *testing.T) {
-	var square PuzzleSquare
+	var square Square
 
 	tables := []struct {
 		val    int
@@ -17,7 +17,7 @@ func TestSolved(t *testing.T) {
 	for _, table := range tables {
 		square.Value = table.val
 		if square.Solved() != table.solved {
-			t.Errorf("PuzzleSquare with value %d, not solved correctly, got: %t, want: %t.", square.Value, square.Solved(), table.solved)
+			t.Errorf("Square with value %d, not solved correctly, got: %t, want: %t.", square.Value, square.Solved(), table.solved)
 		}
 	}
 }
@@ -35,7 +35,7 @@ func TestCreatePuzzleSquare(t *testing.T) {
 	for _, table := range tables {
 		result := CreatePuzzleSquare(table.val)
 		if result.Value != table.val {
-			t.Errorf("PuzzleSquare value not expected, got: %d, want: %d.", result.Value, table.val)
+			t.Errorf("Square value not expected, got: %d, want: %d.", result.Value, table.val)
 		}
 
 		if table.checkPoss {
@@ -45,7 +45,7 @@ func TestCreatePuzzleSquare(t *testing.T) {
 			}
 
 			if possReduction != true {
-				t.Errorf("PuzzleSquare possibilites not all true, value: %d", table.val)
+				t.Errorf("Square possibilites not all true, value: %d", table.val)
 			}
 		}
 	}

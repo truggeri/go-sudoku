@@ -119,10 +119,10 @@ func TestCubeNumber(t *testing.T) {
 
 func TestFindElementPossbilities(t *testing.T) {
 	tables := []struct {
-		elements PuzzleSet
+		elements Set
 		expected Possibilies
 	}{
-		{PuzzleSet{
+		{Set{
 			CreatePuzzleSquare(1), CreatePuzzleSquare(2), CreatePuzzleSquare(0),
 			CreatePuzzleSquare(4), CreatePuzzleSquare(0), CreatePuzzleSquare(6),
 			CreatePuzzleSquare(0), CreatePuzzleSquare(8), CreatePuzzleSquare(9),

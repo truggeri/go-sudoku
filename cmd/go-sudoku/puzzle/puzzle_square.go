@@ -1,7 +1,7 @@
 package puzzle
 
-//PuzzleSquare Representation of a single square in the puzzle
-type PuzzleSquare struct {
+//Square Representation of a single square in the puzzle
+type Square struct {
 	Value         int
 	Possibilities Possibilies
 }
@@ -10,8 +10,8 @@ type PuzzleSquare struct {
 type Possibilies [LineWidth]bool
 
 // CreatePuzzleSquare Creates a single square
-func CreatePuzzleSquare(v int) PuzzleSquare {
-	var sqr PuzzleSquare
+func CreatePuzzleSquare(v int) Square {
+	var sqr Square
 	if v > 0 {
 		sqr.Value = v
 	} else {
@@ -21,6 +21,6 @@ func CreatePuzzleSquare(v int) PuzzleSquare {
 }
 
 // Solved Does this square have a known value
-func (sqr PuzzleSquare) Solved() bool {
+func (sqr Square) Solved() bool {
 	return sqr.Value > 0
 }

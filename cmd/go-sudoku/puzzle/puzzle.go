@@ -10,16 +10,16 @@ const LineWidth = 9
 const cubeWidth = LineWidth / 3
 
 // Puzzle Representation of a Sudoku puzzle
-type Puzzle [LineWidth][LineWidth]PuzzleSquare
+type Puzzle [LineWidth][LineWidth]Square
 
 // GetRow returns a given row
-func (p Puzzle) GetRow(i int) PuzzleSet {
+func (p Puzzle) GetRow(i int) Set {
 	return p[i]
 }
 
 // GetColumn returns a column by given index
-func (p Puzzle) GetColumn(i int) PuzzleSet {
-	var column PuzzleSet
+func (p Puzzle) GetColumn(i int) Set {
+	var column Set
 	for x := 0; x < LineWidth; x++ {
 		column[x] = p[x][i]
 	}
@@ -27,11 +27,11 @@ func (p Puzzle) GetColumn(i int) PuzzleSet {
 }
 
 // GetCube returns squares that form a cube around given point
-func (p Puzzle) GetCube(x, y int) PuzzleSet {
+func (p Puzzle) GetCube(x, y int) Set {
 	xOffset := x / cubeWidth
 	yOffset := y / cubeWidth
 
-	var result PuzzleSet
+	var result Set
 	xIndex := xOffset * cubeWidth
 	yIndex := yOffset * cubeWidth
 	copy(result[0:3], p[xIndex][yIndex:yIndex+3])
@@ -76,7 +76,7 @@ func cubeNumber(x, y int) int {
 	return (x / cubeWidth) + (y/cubeWidth)*cubeWidth
 }
 
-func findElementPossbilities(elements PuzzleSet) Possibilies {
+func findElementPossbilities(elements Set) Possibilies {
 	poss := Possibilies{true, true, true, true, true, true, true, true, true}
 
 	for _, element := range elements {

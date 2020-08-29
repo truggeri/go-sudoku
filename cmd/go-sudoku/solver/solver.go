@@ -3,13 +3,13 @@ package solver
 import "github.com/truggeri/go-sudoku/cmd/go-sudoku/puzzle"
 
 type solveTechnique struct {
-	set   func(int, int) puzzle.PuzzleSet
+	set   func(int, int) puzzle.Set
 	index func(int, int) int
 }
 
 type solution struct {
 	x, y   int
-	square puzzle.PuzzleSquare
+	square puzzle.Square
 }
 
 // Solve Returns the given puzzle with all elements solved
@@ -68,7 +68,7 @@ func onlyOnePossibility(poss puzzle.Possibilies) (bool, int) {
 }
 
 func solveRows(puz puzzle.Puzzle) (bool, solution) {
-	set := func(x, y int) puzzle.PuzzleSet {
+	set := func(x, y int) puzzle.Set {
 		return puz.GetRow(x)
 	}
 	index := func(x, y int) int {
@@ -93,7 +93,7 @@ func solveByElement(puz puzzle.Puzzle, st solveTechnique) (bool, solution) {
 	return false, solution{}
 }
 
-func solveSet(set puzzle.PuzzleSet, i int) (bool, puzzle.PuzzleSquare) {
+func solveSet(set puzzle.Set, i int) (bool, puzzle.Square) {
 	if set[i].Solved() {
 		return false, set[i]
 	}
@@ -109,7 +109,7 @@ func solveSet(set puzzle.PuzzleSet, i int) (bool, puzzle.PuzzleSquare) {
 }
 
 func solveColumns(puz puzzle.Puzzle) (bool, solution) {
-	set := func(x, y int) puzzle.PuzzleSet {
+	set := func(x, y int) puzzle.Set {
 		return puz.GetColumn(y)
 	}
 	index := func(x, y int) int {
@@ -119,7 +119,7 @@ func solveColumns(puz puzzle.Puzzle) (bool, solution) {
 }
 
 func solveCubes(puz puzzle.Puzzle) (bool, solution) {
-	set := func(x, y int) puzzle.PuzzleSet {
+	set := func(x, y int) puzzle.Set {
 		return puz.GetCube(x, y)
 	}
 	index := puzzle.PositionInCube

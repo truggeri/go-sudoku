@@ -40,8 +40,8 @@ func LoadInput() (puzzle.Puzzle, error) {
 	return nums, nil
 }
 
-func splitLine(line string) ([puzzle.LineWidth]puzzle.PuzzleSquare, error) {
-	var row [puzzle.LineWidth]puzzle.PuzzleSquare
+func splitLine(line string) ([puzzle.LineWidth]puzzle.Square, error) {
+	var row [puzzle.LineWidth]puzzle.Square
 	values := strings.Split(line, " ")
 
 	for i, v := range values {

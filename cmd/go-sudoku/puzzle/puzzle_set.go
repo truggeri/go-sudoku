@@ -1,11 +1,11 @@
 package puzzle
 
-// PuzzleSet One linewidth of puzzle squares. Can represent a row, column or cube
-type PuzzleSet [LineWidth]PuzzleSquare
+// Set One linewidth of puzzle squares. Can represent a row, column or cube
+type Set [LineWidth]Square
 
 // Possibilities Gives which numbers are possible in the set
 // @param exclude [int] Index of element to exclude from calculation
-func (set PuzzleSet) Possibilities(exclude int) [LineWidth]bool {
+func (set Set) Possibilities(exclude int) [LineWidth]bool {
 	var possibilities [LineWidth]bool
 
 	for i, element := range set {
