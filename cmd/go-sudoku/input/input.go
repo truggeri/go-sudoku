@@ -1,9 +1,7 @@
 package input
 
 import (
-	"errors"
 	"io/ioutil"
-	"os"
 	"strconv"
 	"strings"
 
@@ -11,15 +9,10 @@ import (
 )
 
 // LoadInput Creates Puzzle from a file path
-func LoadInput() (puzzle.Puzzle, error) {
+func LoadInput(filepath string) (puzzle.Puzzle, error) {
 	var nums puzzle.Puzzle
 
-	argsWithoutProg := os.Args[1:]
-	if len(argsWithoutProg) == 0 {
-		return nums, errors.New("No input args provided")
-	}
-
-	bytes, err := ioutil.ReadFile(argsWithoutProg[0])
+	bytes, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		return nums, err
 	}
@@ -30,28 +23,28 @@ func LoadInput() (puzzle.Puzzle, error) {
 			continue
 		}
 
-		row, err := splitLine(line)
+		set, err := splitLine(line)
 		if err != nil {
 			return nums, err
 		}
-		nums[lineNum] = row
+		nums[lineNum] = set
 	}
 
 	return nums, nil
 }
 
-func splitLine(line string) ([puzzle.LineWidth]puzzle.Square, error) {
-	var row [puzzle.LineWidth]puzzle.Square
-	values := strings.Split(line, " ")
+func splitLine(line string) (puzzle.Set, error) {
+	var set puzzle.Set
+	values := strings.Fields(line)
 
 	for i, v := range values {
 		n, err := strconv.Atoi(v)
 		if err != nil {
-			return row, err
+			return set, err
 		}
 
-		row[i] = puzzle.CreatePuzzleSquare(n)
+		set[i] = puzzle.CreatePuzzleSquare(n)
 	}
 
-	return row, nil
+	return set, nil
 }

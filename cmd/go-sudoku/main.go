@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -17,7 +18,12 @@ func main() {
 }
 
 func run() error {
-	puz, err := input.LoadInput()
+	argsWithoutProg := os.Args[1:]
+	if len(argsWithoutProg) == 0 {
+		return errors.New("No input args provided")
+	}
+
+	puz, err := input.LoadInput(argsWithoutProg[0])
 	if err != nil {
 		return err
 	}
